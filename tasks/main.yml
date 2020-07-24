@@ -1,0 +1,39 @@
+---
+# tasks file for ansible-role-win-openssh
+- name: ansible-role-win-openssh-server - Check WindowsCapability
+  win_shell: |
+    $installed = $false
+    $cap = get-windowscapability -online | ? Name -like '{{ win_capability_openssh_server }}'
+   
+    if ($cap) {
+      if ($cap.State -eq [Microsoft.Dism.Commands.PackageFeatureState]::Installed) {
+         $installed = $true
+      }    
+    }
+    Write-Host $installed
+  register: opensshserver_installed
+  changed_when: False
+
+- name: ansible-role-win-openssh-server - Install WindowsCapability OpenSSH Server
+  win_shell: |
+    Add-WindowsCapability -Online -Name '{{ win_capability_openssh_server }}'
+  when: 
+    - opensshserver_installed.stdout is match("False*")
+  register: opensshserver_status
+
+- name: ansible-role-win-openssh-server - Start sshd service
+  win_service:
+    name: sshd
+    start_mode: auto
+    state: started
+
+- name: ansible-role-win-openssh-server - Firewall rule to allow SSH on TCP port 22
+  win_firewall_rule:
+    name: OpenSSH SSH Server (sshd)
+    localport: 22
+    action: allow
+    direction: in
+    program: '%SystemRoot%\system32\OpenSSH\sshd.exe'
+    protocol: tcp
+    state: present
+    enabled: yes

@@ -1,0 +1,3 @@
+---
+# defaults file for ansible-role-win-openssh
+win_capability_openssh_server: OpenSSH.Server~~~~0.0.1.0
