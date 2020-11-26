@@ -38,6 +38,14 @@
     state: present
     enabled: yes
 
+- name: set the default shell to Powershell
+  win_regedit:
+    path: HKLM:\SOFTWARE\OpenSSH
+    name: DefaultShell
+    data: '{{ win_open_ssh_server_shell_powershell_executable }}'
+    state: present
+  when: win_open_ssh_server_shell_powershell
+
 - name: set the default shell to CMD
   win_regedit:
     path: HKLM:\SOFTWARE\OpenSSH
