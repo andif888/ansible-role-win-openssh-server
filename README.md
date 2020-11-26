@@ -47,7 +47,7 @@ Finally using Ansible with SSH-enabled Windows
 
 ```
 [windows_ssh]
-winsshbox ansible_host=192.168.222.126
+winsshbox ansible_host=192.168.222.126 ansible_user=somelocaladmin
 ```
 
 **Example Playbook**
@@ -60,6 +60,8 @@ winsshbox ansible_host=192.168.222.126
     ansible_port: 22    
     ansible_shell_type: powershell
     ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+    ansible_become_method: runas
+    ansible_become_user: "{{ ansible_user }}"
 
   tasks:
     - name: test powershell
