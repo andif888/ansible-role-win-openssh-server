@@ -1,7 +1,9 @@
 Ansible Role Windows OpenSSH Server
 =========
 
-This role enables the Windows native capability OpenSSH Server.
+This role enables the Windows native capability OpenSSH Server.  
+Optionally enables powershell as default shell.  
+Optionally copies id_rsa.pub to administrators_authorized_keys.
 
 Requirements
 ------------
@@ -33,7 +35,7 @@ Example Playbook
   become: yes
   vars:
     win_open_ssh_server_shell_powershell: true
-    win_open_ssh_server_set_administrators_authorized_key: true
+    win_open_ssh_server_set_administrators_authorized_keys: true
 
   roles:
     - { role: ansible-role-win-openssh-server }
