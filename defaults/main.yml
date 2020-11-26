@@ -1,3 +1,9 @@
 ---
 # defaults file for ansible-role-win-openssh
 win_capability_openssh_server: OpenSSH.Server~~~~0.0.1.0
+
+win_open_ssh_server_shell_powershell: false
+win_open_ssh_server_shell_powershell_executable: '{{ ansible_env.SystemRoot }}\System32\WindowsPowerShell\v1.0\powershell.exe'
+
+win_open_ssh_server_set_administrators_authorized_keys: false
+win_open_ssh_server_administrators_authorized_keys: "{{ lookup('env','HOME') + '/.ssh/id_rsa.pub' }}"
